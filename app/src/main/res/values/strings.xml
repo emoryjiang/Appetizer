@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Appetizer</string>
+    <string name="title_activity_daily_target">Daily Targets</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -8,8 +9,12 @@
 
     <string name="diary_feed_empty">You currently have no entries in your Diary.</string>
 
-    <!-- A zero (0). Literally. -->
+    <!-- IDs for target nutrient values within SharedPreferences -->
+    <string name="prefs_calorie_target">cs125.winter2017.uci.appetizer.CALORIE_TARGET</string>
+
+    <!-- Literals -->
     <string name="zero">0</string>
+    <string name="slash">/</string>
 
     <!-- Labels for nutrients -->
     <string name="calorie_label_short">cal</string>
@@ -34,7 +39,6 @@
     <!-- Display strings for units -->
     <string name="gram_units">g</string>
     <string name="milligram_units">mg</string>
-    <string name="slash">/</string>
-
-
+    <string name="activity_daily_targets_label">Daily Targets</string>
+    <string name="calories_label">Calories</string>
 </resources>

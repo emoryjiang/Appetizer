@@ -10,4 +10,9 @@
     <dimen name="card_label_header_font_size">16sp</dimen>
     <dimen name="card_content_font_size">16sp</dimen>
     <dimen name="text_spacer">5dp</dimen>
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+    <dimen name="nav_header_height">160dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="edittext_min_width">100dp</dimen>
+    <dimen name="daily_target_unit_max_width">25dp</dimen>
 </resources>

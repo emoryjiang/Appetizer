@@ -19,6 +19,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".DailyTargetActivity"
+            android:label="@string/title_activity_daily_target"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cs125.winter2017.uci.appetizer.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

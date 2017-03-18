@@ -1,5 +1,6 @@
 package cs125.winter2017.uci.appetizer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,10 +17,10 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
+import cs125.winter2017.uci.appetizer.daily_targets.DailyTargets;
 import cs125.winter2017.uci.appetizer.food_diary.FoodDiary;
 import cs125.winter2017.uci.appetizer.food_diary.FoodDiaryDay;
 import cs125.winter2017.uci.appetizer.food_diary.FoodDiaryEntry;
-import cs125.winter2017.uci.appetizer.food_diary.MockFoodDiary;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -38,8 +39,8 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity
 
         diaryFeed = (LinearLayout) findViewById(R.id.diary_feed);
         diaryFeedEmpty = (TextView) diaryFeed.findViewById(R.id.diary_feed_empty);
+
+        //findViewById(R.id.nav_home).setActivated(false);
     }
 
     @Override
@@ -77,11 +80,11 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         switch (item.getItemId())
         {
-            case R.id.nav_home:
-                break;
             case R.id.nav_search:
                 break;
-            case R.id.nav_settings:
+            case R.id.nav_daily_targets:
+                Intent dailyGoalsIntent = new Intent(this, DailyTargetActivity.class);
+                startActivity(dailyGoalsIntent);
                 break;
         }
 
@@ -90,23 +93,14 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    // TODO : actually fetch diary data
-    private FoodDiary getFoodDiary(){
-        return MockFoodDiary.MOCK_DIARY;
-    }
-
     // TODO: add the name of the nutrient you are tracking to the card
     private void updateDiaryOverview(){
-        FoodDiary foodDiary = this.getFoodDiary();
-        FoodDiaryDay todaysNutrients = foodDiary.getTodaysEntries();
-        if (todaysNutrients != null)
-            diaryOverviewNutrientValue.setText(
-                    String.format(Locale.getDefault(), "%d", (int) todaysNutrients.getCalorie()));
-        else
-            diaryOverviewNutrientValue.setText("0");
+        FoodDiaryDay todaysNutrients = FoodDiary.getInstance().getTodaysEntries();
+        diaryOverviewNutrientValue.setText(
+                String.format(Locale.getDefault(), "%d", (int) todaysNutrients.getCalorie()));
 
         diaryOverviewNutrientTarget.setText(
-                String.format(Locale.getDefault(), "%d", (int) foodDiary.getCalorie()));
+                String.format(Locale.getDefault(), "%d", (int) DailyTargets.getCalorie(this)));
         diaryOverviewNutrientUnits.setText(getString(R.string.calorie_units));
 
     }
@@ -115,15 +109,15 @@ public class MainActivity extends AppCompatActivity
 
         diaryFeed.removeAllViews();
 
-        FoodDiary foodDiary = this.getFoodDiary();
-        if (foodDiary.isEmpty()){
+        FoodDiary foodDiary = FoodDiary.getInstance();
+        if (foodDiary.numEntries() == 0){
             diaryFeed.addView(diaryFeedEmpty);
             return;
         }
 
         LayoutInflater layoutInflater = getLayoutInflater();
 
-        for (FoodDiaryDay foodDiaryDay : foodDiary.values()){
+        for (FoodDiaryDay foodDiaryDay : foodDiary.entries.values()){
             LinearLayout diaryDay = (LinearLayout) layoutInflater.inflate(
                     R.layout.layout_diary_day, null);
             ((TextView)diaryDay.findViewById(R.id.diary_day_date))

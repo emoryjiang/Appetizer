@@ -29,7 +29,6 @@
 
                     android:layout_gravity="left">
 
-
                     <ImageView
                         android:layout_width="@dimen/card_content_font_size"
                         android:layout_height="@dimen/card_content_font_size"

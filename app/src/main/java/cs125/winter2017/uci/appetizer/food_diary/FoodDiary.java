@@ -1,14 +1,25 @@
 package cs125.winter2017.uci.appetizer.food_diary;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.NavigableSet;
 import java.util.TreeMap;
 
-public class FoodDiary extends TreeMap<DateTime, FoodDiaryDay> implements NutrientFactHolder {
+public class FoodDiary {
+
+    private static class Loader {
+        private static final FoodDiary INSTANCE = new FoodDiary();
+    }
+
+    public static FoodDiary getInstance(){
+        return Loader.INSTANCE;
+    }
 
     public static Comparator<DateTime> SAME_DAY_COMPARATOR = new Comparator<DateTime>() {
         @Override
@@ -17,103 +28,116 @@ public class FoodDiary extends TreeMap<DateTime, FoodDiaryDay> implements Nutrie
         }
     };
 
-	private double Calorie;
-	private double Fat;
-	private double Protein;
-	private double Cholesterol;
-	private double Sugar;
-	private double Carbs;
-	private double Sodium;
-	private double Fiber;
+    public TreeMap<DateTime, FoodDiaryDay> entries;
 
-	public FoodDiary(int Calorie, int Fat, int Protein, int Cholesterol, int Sugar, int Carbs,
-                     int Sodium, int Fiber){
-        super(SAME_DAY_COMPARATOR);
+    private FoodDiary(){
+        entries = new TreeMap<>(SAME_DAY_COMPARATOR);
 
-        setCalorie(Calorie);
-		setFat(Fat);
-		setProtein(Protein);
-		setCholesterol(Cholesterol);
-		setSugar(Sugar);
-		setCarbs(Carbs);
-		setSodium(Sodium);
-		setFiber(Fiber);
-	}
+        DateTime today = new DateTime();
+        FoodDiaryDay day1 = new FoodDiaryDay(today);
 
-	@Nullable
+        day1.addAll(Arrays.asList(
+                new FoodDiaryEntry.Builder()
+                        .setDate(today.withHourOfDay(9))
+                        .setName("Eggs")
+                        .setServings(2)
+                        .setCalorie(90)
+                        .setFat(7)
+                        .setCholesterol(184)
+                        .setSodium(95)
+                        .setCarbs(0.4)
+                        .setFiber(0)
+                        .setSugar(0.6)
+                        .setProtein(6)
+                        .build(),
+                new FoodDiaryEntry.Builder()
+                        .setDate(today.withHourOfDay(2))
+                        .setName("Ramen")
+                        .setServings(1)
+                        .setCalorie(188)
+                        .setFat(7)
+                        .setCholesterol(0)
+                        .setCarbs(27)
+                        .setFiber(1)
+                        .setSugar(0.7)
+                        .setProtein(4.5)
+                        .setSodium(875)
+                        .build()
+        ));
+
+        DateTime yesterday = today.minusDays(1);
+        FoodDiaryDay day2 = new FoodDiaryDay(yesterday);
+
+        DateTime evening = yesterday.withHourOfDay(18);
+        day2.addAll(Arrays.asList(
+                new FoodDiaryEntry.Builder()
+                        .setDate(evening)
+                        .setName("Hamburger")
+                        .setServings(1)
+                        .setCalorie(354)
+                        .setFat(17)
+                        .setCholesterol(56)
+                        .setSodium(497)
+                        .setCarbs(29)
+                        .setFiber(1.1)
+                        .setSugar(5)
+                        .setProtein(20)
+                        .build(),
+                new FoodDiaryEntry.Builder()
+                        .setDate(evening)
+                        .setName("French Fries")
+                        .setServings(1)
+                        .setFat(17)
+                        .setCholesterol(0)
+                        .setSodium(246)
+                        .setCarbs(48)
+                        .setFiber(4.4)
+                        .setSugar(0.4)
+                        .setProtein(4)
+                        .build()
+        ));
+
+        addDay(day1);
+        addDay(day2);
+    }
+
+    public int numEntries(){
+        int entryCount = 0;
+        for (FoodDiaryDay day : entries.values())
+            entryCount += day.size();
+        return entryCount;
+    }
+
+	@NonNull
 	public FoodDiaryDay getTodaysEntries(){
-        return this.get(new DateTime());
+        return getDay(new DateTime());
     }
 
-    @Override
-    public double getCalorie() {
-        return Calorie;
+    public void addEntry(FoodDiaryEntry entry){
+        getDay(entry.getDate()).add(entry);
     }
 
-    public void setCalorie(double calorie) {
-        Calorie = calorie;
+    public void addDay(FoodDiaryDay day){
+        entries.put(day.getDate(), day);
     }
 
-    @Override
-    public double getFat() {
-        return Fat;
+    @NonNull
+    public FoodDiaryDay getDay(DateTime date){
+        FoodDiaryDay day = entries.get(date);
+        if (day == null){
+            day = loadDayFromDisk(date);
+            if (day == null)
+                day = new FoodDiaryDay(date);
+            entries.put(date, day);
+        }
+
+        return day;
     }
 
-    public void setFat(double fat) {
-        Fat = fat;
+    // TODO: load the thing from disk
+    @Nullable
+    private FoodDiaryDay loadDayFromDisk(DateTime date){
+        return null;
     }
 
-    @Override
-    public double getProtein() {
-        return Protein;
-    }
-
-    public void setProtein(double protein) {
-        Protein = protein;
-    }
-
-    @Override
-    public double getCholesterol() {
-        return Cholesterol;
-    }
-
-    public void setCholesterol(double cholesterol) {
-        Cholesterol = cholesterol;
-    }
-
-    @Override
-    public double getSugar() {
-        return Sugar;
-    }
-
-    public void setSugar(double sugar) {
-        Sugar = sugar;
-    }
-
-    @Override
-    public double getCarbs() {
-        return Carbs;
-    }
-
-    public void setCarbs(double carbs) {
-        Carbs = carbs;
-    }
-
-    @Override
-    public double getSodium() {
-        return Sodium;
-    }
-
-    public void setSodium(double sodium) {
-        Sodium = sodium;
-    }
-
-    @Override
-    public double getFiber() {
-        return Fiber;
-    }
-
-    public void setFiber(double fiber) {
-        Fiber = fiber;
-    }
 }

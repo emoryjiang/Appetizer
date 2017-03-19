@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity
         if (resultCode == RESULT_CANCELED)
             return;
 
-        //boolean delete = data.getBooleanExtra("DELETE", false);
+        boolean delete = data.getBooleanExtra("DELETE", false);
         Bundle entryData = data.getBundleExtra("DATA");
 
         switch (requestCode) {
@@ -142,9 +142,9 @@ public class MainActivity extends AppCompatActivity
                 break;
             case EDIT_ENTRY:
                 if (entryToEdit != null) {
-//                    if (delete)
-//                        FoodDiary.getInstance().removeEntry(entryToEdit);
-//                    else {
+                    if (delete)
+                        FoodDiary.getInstance().removeEntry(dbHelper, entryToEdit);
+                    else {
                         entryToEdit.setName(entryData.getString("NAME"));
                         entryToEdit.setCalorie(entryData.getDouble("CALORIE"));
                         entryToEdit.setFat(entryData.getDouble("FAT"));
@@ -154,7 +154,9 @@ public class MainActivity extends AppCompatActivity
                         entryToEdit.setProtein(entryData.getDouble("PROTEIN"));
                         entryToEdit.setSodium(entryData.getDouble("SODIUM"));
                         entryToEdit.setSugar(entryData.getDouble("SUGAR"));
-//                    }
+
+                        FoodDiary.getInstance().editEntry(dbHelper, entryToEdit);
+                    }
                     entryToEdit = null;
                 }
                 break;

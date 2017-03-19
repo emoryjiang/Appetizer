@@ -138,13 +138,13 @@ public class DiaryEntryActivity extends AppCompatActivity implements
         new ExitAlertDialogFragment().show(getSupportFragmentManager(), "dialog");
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//
-//        if (getIntent().getBooleanExtra(EDITING_ENTRY, false))
-//            getMenuInflater().inflate(R.menu.menu_diary_entry_edit, menu);
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        if (getIntent().getBooleanExtra(EDITING_ENTRY, false))
+            getMenuInflater().inflate(R.menu.menu_diary_entry_edit, menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem){
@@ -152,10 +152,10 @@ public class DiaryEntryActivity extends AppCompatActivity implements
             case android.R.id.home:
                 new ExitAlertDialogFragment().show(getSupportFragmentManager(), "dialog");
                 return true;
-//            case R.id.diary_entry_edit_delete:
-//                new DeleteAlertDialogFragment().show(getSupportFragmentManager(), "dialog");
-//                return true;
-        }
+            case R.id.diary_entry_edit_delete:
+                new DeleteAlertDialogFragment().show(getSupportFragmentManager(), "dialog");
+                return true;
+    }
 
         return super.onOptionsItemSelected(menuItem);
     }

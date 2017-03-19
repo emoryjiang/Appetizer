@@ -83,6 +83,32 @@ public class FoodDiaryDBHelper extends SQLiteOpenHelper {
 
         db.insert(ENTRIES_TABLE_NAME, null, contentValues);
 
+        //Setting the newly generated Id into entry
+        Cursor c = db.rawQuery("SELECT last_insert_rowid()", null);
+        if(c.moveToNext()) {
+            entry.setId(c.getInt(0));
+        }
+
+        return true;
+    }
+
+    public boolean updateEntry(FoodDiaryEntry entry) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("name", entry.getName());
+        contentValues.put("date", datetimeToString(entry.getDate()));
+        contentValues.put("servings", entry.getServings());
+        contentValues.put("calorie", entry.getCalorie());
+        contentValues.put("fat", entry.getFat());
+        contentValues.put("protein", entry.getProtein());
+        contentValues.put("cholesterol", entry.getCholesterol());
+        contentValues.put("sugar", entry.getSugar());
+        contentValues.put("carbs", entry.getCarbs());
+        contentValues.put("sodium", entry.getSodium());
+        contentValues.put("fiber", entry.getFiber());
+
+        db.update(ENTRIES_TABLE_NAME, contentValues, "id = ? ", new String[] { Integer.toString(entry.getId()) } );
+
         return true;
 
     }

@@ -11,7 +11,7 @@ public class FoodDiaryEntry implements Comparable<FoodDiaryEntry>, NutrientFactH
     private final @NonNull DateTime date;
 	private @NonNull String Name;
 
-    private int Servings;
+    private double Servings;
 	private double Calorie;
 	private double Fat;
 	private double Protein;
@@ -47,7 +47,7 @@ public class FoodDiaryEntry implements Comparable<FoodDiaryEntry>, NutrientFactH
         private @NonNull DateTime Date;
         private @NonNull String Name;
 
-        private int Servings;
+        private double Servings;
         private double Calorie;
         private double Fat;
         private double Protein;
@@ -82,7 +82,7 @@ public class FoodDiaryEntry implements Comparable<FoodDiaryEntry>, NutrientFactH
             return this;
         }
 
-        public Builder setServings(int servings) {
+        public Builder setServings(double servings) {
             Servings = servings;
             return this;
         }
@@ -152,11 +152,11 @@ public class FoodDiaryEntry implements Comparable<FoodDiaryEntry>, NutrientFactH
         Name = name;
     }
 
-    public int getServings() {
+    public double getServings() {
         return Servings;
     }
 
-    public void setServings(int servings) {
+    public void setServings(double servings) {
         Servings = servings;
     }
 

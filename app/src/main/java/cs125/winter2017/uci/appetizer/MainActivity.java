@@ -22,6 +22,7 @@ import java.util.Locale;
 
 import cs125.winter2017.uci.appetizer.daily_targets.DailyTargets;
 import cs125.winter2017.uci.appetizer.food_diary.FoodDiary;
+import cs125.winter2017.uci.appetizer.food_diary.FoodDiaryDBHelper;
 import cs125.winter2017.uci.appetizer.food_diary.FoodDiaryDay;
 import cs125.winter2017.uci.appetizer.food_diary.FoodDiaryEntry;
 
@@ -41,12 +42,16 @@ public class MainActivity extends AppCompatActivity
 
     private FoodDiaryEntry entryToEdit;
 
+    private FoodDiaryDBHelper dbHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        dbHelper = new FoodDiaryDBHelper(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
@@ -116,7 +121,7 @@ public class MainActivity extends AppCompatActivity
         if (resultCode == RESULT_CANCELED)
             return;
 
-        boolean delete = data.getBooleanExtra("DELETE", false);
+        //boolean delete = data.getBooleanExtra("DELETE", false);
         Bundle entryData = data.getBundleExtra("DATA");
 
         switch (requestCode) {
@@ -133,13 +138,13 @@ public class MainActivity extends AppCompatActivity
                         .setSodium(entryData.getDouble("SODIUM"))
                         .setSugar(entryData.getDouble("SUGAR"))
                         .build();
-                FoodDiary.getInstance().addEntry(newEntry);
+                FoodDiary.getInstance().addEntry(dbHelper, newEntry);
                 break;
             case EDIT_ENTRY:
                 if (entryToEdit != null) {
-                    if (delete)
-                        FoodDiary.getInstance().removeEntry(entryToEdit);
-                    else {
+//                    if (delete)
+//                        FoodDiary.getInstance().removeEntry(entryToEdit);
+//                    else {
                         entryToEdit.setName(entryData.getString("NAME"));
                         entryToEdit.setCalorie(entryData.getDouble("CALORIE"));
                         entryToEdit.setFat(entryData.getDouble("FAT"));
@@ -149,7 +154,7 @@ public class MainActivity extends AppCompatActivity
                         entryToEdit.setProtein(entryData.getDouble("PROTEIN"));
                         entryToEdit.setSodium(entryData.getDouble("SODIUM"));
                         entryToEdit.setSugar(entryData.getDouble("SUGAR"));
-                    }
+//                    }
                     entryToEdit = null;
                 }
                 break;
@@ -159,7 +164,7 @@ public class MainActivity extends AppCompatActivity
 
     // TODO: add the name of the nutrient you are tracking to the card
     private void updateDiaryOverview(){
-        FoodDiaryDay todaysNutrients = FoodDiary.getInstance().getTodaysEntries();
+        FoodDiaryDay todaysNutrients = FoodDiary.getInstance().getTodaysEntries(dbHelper);
         diaryOverviewNutrientValue.setText(
                 String.format(Locale.getDefault(), "%d", (int) todaysNutrients.getCalorie()));
 
@@ -184,7 +189,7 @@ public class MainActivity extends AppCompatActivity
         LayoutInflater layoutInflater = getLayoutInflater();
 
 
-        for (FoodDiaryDay foodDiaryDay : foodDiary.entries.values()){
+        for (FoodDiaryDay foodDiaryDay : foodDiary.getDaysBeforeNow(dbHelper, 5)){
 
             if (foodDiaryDay.isEmpty())
                 continue;

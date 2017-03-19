@@ -6,8 +6,10 @@ import android.support.annotation.Nullable;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.NavigableSet;
 import java.util.TreeMap;
 
@@ -42,28 +44,29 @@ public class FoodDiary {
     }
 
 	@NonNull
-	public FoodDiaryDay getTodaysEntries(){
-        return getDay(new DateTime());
+	public FoodDiaryDay getTodaysEntries(FoodDiaryDBHelper dbHelper){
+        return getDay(dbHelper, new DateTime());
     }
 
-    public void addEntry(FoodDiaryEntry entry){
-        getDay(entry.getDate()).add(entry);
+    public void addEntry(FoodDiaryDBHelper dbHelper, FoodDiaryEntry entry){
+        getDay(dbHelper, entry.getDate()).add(entry);
+        dbHelper.insertEntry(entry);
     }
 
     public void addDay(FoodDiaryDay day){
         entries.put(day.getDate(), day);
     }
 
-    public void removeEntry(FoodDiaryEntry entry){
-        FoodDiaryDay entryDay = getDay(entry.getDate());
-        entryDay.remove(entry);
-    }
+//    public void removeEntry(FoodDiaryEntry entry){
+//        FoodDiaryDay entryDay = getDay(dbHelper, entry.getDate());
+//        entryDay.remove(entry);
+//    }
 
     @NonNull
-    public FoodDiaryDay getDay(DateTime date){
+    public FoodDiaryDay getDay(FoodDiaryDBHelper dbHelper, DateTime date){
         FoodDiaryDay day = entries.get(date);
         if (day == null){
-            day = loadDayFromDisk(date);
+            day = loadDayFromDisk(dbHelper, date);
             if (day == null)
                 day = new FoodDiaryDay(date);
             entries.put(date, day);
@@ -72,10 +75,22 @@ public class FoodDiary {
         return day;
     }
 
+    public List<FoodDiaryDay> getDaysBeforeNow(FoodDiaryDBHelper dbHelper, int days){
+        List<FoodDiaryDay> foodDiaryDays = new ArrayList<>();
+        DateTime today = new DateTime();
+
+        for (int i = 0; i < days; ++i){
+            DateTime toFetch = today.minusDays(i);
+            foodDiaryDays.add(getDay(dbHelper, toFetch));
+        }
+
+        return foodDiaryDays;
+    }
+
     // TODO: load the thing from disk
     @Nullable
-    private FoodDiaryDay loadDayFromDisk(DateTime date){
-        return null;
+    private FoodDiaryDay loadDayFromDisk(FoodDiaryDBHelper dbHelper, DateTime date){
+        return dbHelper.getFoodDiaryDay(date);
     }
 
 }

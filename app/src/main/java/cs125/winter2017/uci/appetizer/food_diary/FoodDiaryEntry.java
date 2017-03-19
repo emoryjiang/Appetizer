@@ -11,6 +11,7 @@ public class FoodDiaryEntry implements Comparable<FoodDiaryEntry>, NutrientFactH
     private final @NonNull DateTime date;
 	private @NonNull String Name;
 
+    private int Id;
     private double Servings;
 	private double Calorie;
 	private double Fat;
@@ -25,6 +26,7 @@ public class FoodDiaryEntry implements Comparable<FoodDiaryEntry>, NutrientFactH
         date = builder.Date;
         Name = builder.Name;
 
+        setId(builder.Id);
         setName(builder.Name);
         setServings(builder.Servings);
         setCalorie(builder.Calorie);
@@ -47,6 +49,7 @@ public class FoodDiaryEntry implements Comparable<FoodDiaryEntry>, NutrientFactH
         private @NonNull DateTime Date;
         private @NonNull String Name;
 
+        private int Id;
         private double Servings;
         private double Calorie;
         private double Fat;
@@ -61,6 +64,7 @@ public class FoodDiaryEntry implements Comparable<FoodDiaryEntry>, NutrientFactH
             Date = new DateTime();
             Name = "";
 
+            Id = -1;
             Servings = 1;
             Calorie = 0;
             Fat = 0;
@@ -70,6 +74,11 @@ public class FoodDiaryEntry implements Comparable<FoodDiaryEntry>, NutrientFactH
             Carbs = 0;
             Sodium = 0;
             Fiber = 0;
+        }
+
+        public Builder setId(int id) {
+            Id = id;
+            return this;
         }
 
         public Builder setDate(@NonNull DateTime date){
@@ -137,6 +146,10 @@ public class FoodDiaryEntry implements Comparable<FoodDiaryEntry>, NutrientFactH
                 Integer.toString(date.get(DateTimeFieldType.monthOfYear())) + "-" +
                 Integer.toString(date.get(DateTimeFieldType.dayOfMonth()));
 	}
+
+	public int getId() { return Id; }
+
+    public void setId(int id) { Id = id; }
 
     @NonNull
     public DateTime getDate() {

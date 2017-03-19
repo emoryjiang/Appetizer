@@ -65,6 +65,7 @@ public class FoodDiaryDBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    // Function to insert an FoodDiaryEntry Object into the SQLite database
     public boolean insertEntry(FoodDiaryEntry entry) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -86,12 +87,14 @@ public class FoodDiaryDBHelper extends SQLiteOpenHelper {
 
     }
 
+    // Helper function that returns a Cursor from a rawQuery call to retrieve all entries on a specific date
     public Cursor getEntriesByDate(DateTime dt) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res = db.rawQuery("SELECT * FROM entries where date=\"" + datetimeToString(dt) + "\"", null);
         return res;
     }
 
+    // Obtain information and generate a FoodDiaryDay Object from SQLite database
     public FoodDiaryDay getFoodDiaryDay(DateTime dt) {
         Cursor entries = getEntriesByDate(dt);
 
@@ -99,6 +102,7 @@ public class FoodDiaryDBHelper extends SQLiteOpenHelper {
 
         while(entries.moveToNext()) {
             FoodDiaryEntry entry = new FoodDiaryEntry.Builder()
+                    .setId(entries.getInt(entries.getColumnIndex(ENTRIES_COLUMN_ID)))
                     .setName(entries.getString(entries.getColumnIndex(ENTRIES_COLUMN_NAME)))
                     //TODO: format properly
                     .setDate(DateTime.parse(
@@ -118,9 +122,16 @@ public class FoodDiaryDBHelper extends SQLiteOpenHelper {
         }
 
         return toReturn;
-
     }
 
+    // Delete row from `entries` table by Id
+    public Integer deleteEntry(int entryId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String selection = ENTRIES_COLUMN_ID + " = ?";
+        String[] selectionArgs = { Integer.toString(entryId) };
+
+        return db.delete(ENTRIES_TABLE_NAME, selection, selectionArgs);
+    }
 
     private String datetimeToString(DateTime dt) {
         return DATE_TIME_FORMATTER.print(dt);

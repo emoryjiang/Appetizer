@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_home"
-        android:title="Home" />
+        android:title="@string/nav_diary" />
     <item
         android:id="@+id/nav_search"
-        android:title="Search" />
+        android:title="@string/nav_search" />
     <item
         android:id="@+id/nav_daily_targets"
-        android:title="@string/title_activity_daily_target" />
+        android:title="@string/nav_daily_target" />
 </menu>

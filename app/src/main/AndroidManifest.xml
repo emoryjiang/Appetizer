@@ -28,6 +28,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="cs125.winter2017.uci.appetizer.MainActivity" />
         </activity>
+        <activity
+            android:name=".DiaryEntryActivity"
+            android:label="@string/title_activity_diary_entry"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="cs125.winter2017.uci.appetizer.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

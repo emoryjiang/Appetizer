@@ -22,7 +22,7 @@ public class FoodDiaryEntry implements Comparable<FoodDiaryEntry>, NutrientFactH
 	private double Fiber;
 
     private FoodDiaryEntry(Builder builder){
-        date = builder.date;
+        date = builder.Date;
         Name = builder.Name;
 
         setName(builder.Name);
@@ -44,7 +44,7 @@ public class FoodDiaryEntry implements Comparable<FoodDiaryEntry>, NutrientFactH
     }
 
     public static class Builder {
-        private @NonNull DateTime date;
+        private @NonNull DateTime Date;
         private @NonNull String Name;
 
         private int Servings;
@@ -58,7 +58,7 @@ public class FoodDiaryEntry implements Comparable<FoodDiaryEntry>, NutrientFactH
         private double Fiber;
 
         public Builder(){
-            date = new DateTime();
+            Date = new DateTime();
             Name = "";
 
             Servings = 1;
@@ -73,7 +73,7 @@ public class FoodDiaryEntry implements Comparable<FoodDiaryEntry>, NutrientFactH
         }
 
         public Builder setDate(@NonNull DateTime date){
-            date = date;
+            Date = date;
             return this;
         }
 

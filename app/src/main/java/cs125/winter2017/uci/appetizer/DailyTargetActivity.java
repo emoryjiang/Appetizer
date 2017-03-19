@@ -147,10 +147,10 @@ public class DailyTargetActivity extends AppCompatActivity
         @Override
         public void afterTextChanged(Editable editable) {
             Context viewContext = view.getContext();
+            String valueString = editable.toString();
+            if (valueString.isEmpty())
+                editable.append("0");
             double value = Double.parseDouble(editable.toString());
-
-            // Recursive. probably.
-            //view.setText(String.format(Locale.getDefault(), "%.1f", value));
 
             switch (view.getId()){
                 case R.id.daily_target_calorie:

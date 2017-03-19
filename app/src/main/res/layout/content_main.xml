@@ -125,22 +125,62 @@
 
             </android.support.v7.widget.CardView>
 
+            <RelativeLayout
+                android:id="@+id/diary_add_entry"
+
+                android:orientation="horizontal"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:padding="@dimen/content_padding">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_centerInParent="true">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:src="@drawable/ic_add_box_black_24dp"/>
+
+                    <Space
+                        android:layout_width="@dimen/text_spacer"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:text="@string/diary_feed_add"/>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/diary_feed_empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/content_padding"
+                android:paddingBottom="@dimen/content_padding"
+
+                android:text="@string/diary_feed_empty"
+                android:textAlignment="center"
+                />
+
             <LinearLayout
                 android:id="@+id/diary_feed"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/diary_feed_empty"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/content_padding"
-                    android:paddingBottom="@dimen/content_padding"
 
-                    android:text="@string/diary_feed_empty"
-                    android:textAlignment="center"
-                    />
 
             </LinearLayout>
 

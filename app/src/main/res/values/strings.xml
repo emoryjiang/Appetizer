@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">Appetizer</string>
+
+    <string name="title_activity_diary">Food Diary</string>
+    <string name="title_activity_diary_entry">Diary Entry</string>
+    <string name="title_activity_diary_entry_new">New Diary Entry</string>
+    <string name="title_activity_diary_entry_edit">Edit Diary Entry</string>
     <string name="title_activity_daily_target">Daily Targets</string>
+
+    <string name="nav_diary">Home</string>
+    <string name="nav_daily_target">@string/title_activity_daily_target</string>
+    <string name="nav_search">Search</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -8,6 +17,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="diary_feed_empty">You currently have no entries in your Diary.</string>
+    <string name="diary_feed_add">Add a new entry.</string>
 
     <!-- IDs for target nutrient values within SharedPreferences -->
     <string name="prefs_calorie_target">cs125.winter2017.uci.appetizer.CALORIE_TARGET</string>
@@ -17,7 +27,10 @@
     <string name="slash">/</string>
 
     <!-- Labels for nutrients -->
+    <string name="date_label">Date</string>
+    <string name="name_label">Name</string>
     <string name="calorie_label_short">cal</string>
+    <string name="calories_label">Calories</string>
     <string name="fat_label">Fat</string>
     <string name="protein_label">Protein</string>
     <string name="cholesterol_label">Cholesterol</string>
@@ -39,6 +52,13 @@
     <!-- Display strings for units -->
     <string name="gram_units">g</string>
     <string name="milligram_units">mg</string>
-    <string name="activity_daily_targets_label">Daily Targets</string>
-    <string name="calories_label">Calories</string>
+
+    <string name="diary_entry_unsaved">This entry has not been saved. Go back anyway?</string>
+    <string name="diary_entry_name_hint">Enter dish name here...</string>
+
+    <string name="ok">OK</string>
+    <string name="alert_cancel">CANCEL</string>
+    <string name="save">SAVE</string>
+    <string name="diary_entry_delete_warning">This entry cannot be restored after deletion. Delete anyway?</string>
+
 </resources>

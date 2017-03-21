@@ -105,7 +105,9 @@
 
                         android:background="@android:color/white"
 
-                        android:checkedButton="@+id/search_price_lowest">
+                        android:checkedButton="@+id/search_price_lowest"
+
+                        android:id="@+id/search_price">
 
                         <RadioButton
                             android:id="@+id/search_price_lowest"

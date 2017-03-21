@@ -1,6 +1,9 @@
 package cs125.winter2017.uci.appetizer.Search;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -10,6 +13,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import cs125.winter2017.uci.appetizer.R;
@@ -20,11 +27,13 @@ import cs125.winter2017.uci.appetizer.location.GetLocationFragment;
 
 public class SearchActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        GetLocationFragment.OnLocationAcquireListener {
+        GetLocationFragment.OnLocationAcquireListener, AsyncResponse {
 
     private GetLocationFragment locationFragment;
 
     private TextView locationText;
+
+    private Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +61,13 @@ public class SearchActivity extends AppCompatActivity
         locationFragment = (GetLocationFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.search_current_location_map);
         locationFragment.setLocationAcquireListener(this);
+
+        findViewById(R.id.search_bar_search).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String places = retrieveRestaurants();
+            }
+        });
     }
 
     @Override
@@ -90,5 +106,45 @@ public class SearchActivity extends AppCompatActivity
     @Override
     public void onLocationAcquire(GetLocationFragment locationFragment) {
         locationText.setText(locationFragment.getLocationString());
+        location = locationFragment.getLocation();
     }
+
+    private String retrieveRestaurants() {
+
+        Search_Places searchPlaces;
+
+        EditText searchBarText = (EditText)findViewById(R.id.search_bar_text);
+        String searchQuery = searchBarText.getText().toString();
+
+        RadioGroup radioSearchPriceGroup = (RadioGroup)findViewById(R.id.search_price);
+        RadioButton radioSearchPriceButton = (RadioButton)findViewById(radioSearchPriceGroup.getCheckedRadioButtonId());
+
+        int price = radioSearchPriceButton.length();
+
+        String mealType = "Breakfast";
+
+        if(location != null) {
+            searchPlaces = new Search_Places(searchQuery, location.getLatitude(), location.getLongitude(), 1000, price, mealType);
+            DownloadPlacesTask task = new DownloadPlacesTask();
+            task.delegate = this;
+            searchPlaces.Search(task);
+        }
+
+        return "";
+    }
+
+    @Override
+    public void processFinish(String output) {
+        AlertDialog alertDialog = new AlertDialog.Builder(SearchActivity.this).create();
+        alertDialog.setTitle("Alert");
+        alertDialog.setMessage(output);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+    }
+
 }

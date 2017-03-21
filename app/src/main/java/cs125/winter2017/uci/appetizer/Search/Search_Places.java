@@ -20,6 +20,8 @@ public class Search_Places{
     private String Mealtype;
     private boolean Opennow;
     private String GoogleAPIkey = "AIzaSyARCNUYBmwBkXLBCWkmddG2Kr-Bcb0xe-Y";
+    private String result;
+
 
     public Search_Places(String query, double lat, double lon, int radius, int price, String mealtype){
         Query = query.replaceAll(" ", "+");
@@ -30,6 +32,7 @@ public class Search_Places{
         Type = "restaurant";
         Mealtype = mealtype;
         //Opennow = opennow;
+        result = new String();
 
     }
 
@@ -93,12 +96,16 @@ public class Search_Places{
 
     public String search(){
         String url = get_url();
+
         String results = get_places(url);
         return results;
     }
 
+    public void Search(DownloadPlacesTask task) {
+        String url = get_url();
+        task.execute(url);
 
-
+    }
 
 
 
